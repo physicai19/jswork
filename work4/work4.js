@@ -23,7 +23,7 @@ for(let i=1;i<10;++i){
     str += '<tr>'
     for(var j=1;j<=i;++j){
         //；拼接单元格
-        str += '<td>' + j + '*' + i + '=' + ( j * i )
+        str += '<td>' + j + '*' + i + '=' + ( j * i ) + '</td>'
     }
     str += '</tr>'
 }
