@@ -1,4 +1,4 @@
-ction sort(method){
+function sort(method){
     let origin = document.getElementById('origin').value 
     let logs
     console.log(method)
