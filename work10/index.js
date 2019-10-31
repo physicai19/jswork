@@ -21,13 +21,13 @@ function monkey(){
     }
     document.getElementById('monkeyking').innerText = monkey[0]
 }
-function stat() {
-    let str = document.getElementById('str').value
+function stat(){
+    let str = document.getElementById("str").value
     let obj = {}
-    str = parseInt(str) && Number(str)
-    obj = parseInt(obj) && Number(obj)
-    if(isNaN(str)||isNaN(obj)){
-        alert('待统计的字符串')
-        return
+    var array = str.split("")
+    array = array.sort()
+    for(var i=0,l=str.length;i<l;i++){
+        obj[array[i]]=(obj[array[i]]+1) || 1;
     }
+    document.getElementById('result').innerText = JSON.stringify(obj)
 }
