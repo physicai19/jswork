@@ -39,6 +39,11 @@ body {
 .box-body label input {
     cursor: pointer;
 }
+.box-body input {
+    vertical-align: middle;
+    font-family: Tahoma, simsun;
+    font-size: 12px;
+}
 .box-body input[type=text] {
     padding: 2px;
 }

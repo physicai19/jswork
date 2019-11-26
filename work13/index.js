@@ -3,7 +3,7 @@ var elements= [
     {tag: 'input', text:'学 号:',attr:{type:'text',name:'sid'}},
     {tag: 'input', text:'班 级:',attr:{type:'text',name:'classid'}},
     {tag: 'input', text:'性 别:',attr:{type:'radio',name:'gender'},
-    Option:{m:'男',w:'女'}},
+    option:{m:'男',w:'女'}},
     {tag: 'input', text:'爱 好:',attr:{type:'checkbox',name:'hobby[]'},
     option:{swimming:'游泳',reading:'读书',running:'跑步'}},
     {tag: 'select', text:'住 址:',attr:{name:'area'},
