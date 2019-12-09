@@ -33,6 +33,7 @@
             item.check.onclick = function(){
                 cart.updateTotal();
             };
+
             item.add.onclick = function(){
                 item.num.textContent = ++item.data.num;
                 item.updateSubtotal()
@@ -47,6 +48,7 @@
                     alert('至少选择1件，如果不需要，请直接删除');
                 }
             };
+
             item.del.onclick = function(){
                 if(confirm('您确定要删除此商品吗？')){
                     tmp.parentNode.removeChild(tmp);
@@ -55,7 +57,9 @@
                 }
             };
             item.updateSubtotal();
+            
             this.items.push(item);
+            
             this.bottom.before(tmp);
         },
         del:function(item){
@@ -114,7 +118,7 @@
         this.obj = obj;
     }
     Find.prototype = {
-        prefix:'',
+        prefix:'',       
         className:function(className){
             return this.obj.getElementsByClassName(this.prefix + '-' + className)[0];
         }
