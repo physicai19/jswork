@@ -6,7 +6,7 @@ function animate(obj, option) {
         var leader = parseInt(getStyle(obj , k)) || 0;
         var target = option[k];
         var step = (target - leader) / 10;
-        step = step > 0 ? Math.ceil(step) : Math.floer(step);
+        step = step > 0 ? Math.ceil(step) : Math.floor(step);
         leader = leader + step;
         obj.style[k] = leader + 'px';
         if (leader != target) {
