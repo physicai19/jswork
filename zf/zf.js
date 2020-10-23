@@ -8,54 +8,47 @@ const iconv = require('iconv-lite')
 const rl = readline.createInterface({
     input:process.stdin
 })
-//肉眼识别验证码，并输入
-let buf = []
-rl.on('line',(line) => {
-    if(line.trim()=='') rl.close()
+let buf=[]
+rl.on('line',(line)=>{
+    if(line.trim()=='')rl.close()
     buf.push(line)
 })
-rl.on('close',() => {
+rl.on('close',()=>{
     vcode = buf[0].trim()
-    console.log('验证码是：',vcode)
+    console.log('验证码：',vcode)
     login()
 })
-let{
+let {
     user,
     password
-}= JSON.parse(require('fs').readFileSync('zf.json','utf8'))
-
+} = JSON.parse(require('fs').readFileSync('zf.json','utf-8'))
 let baseurl = 'https://jwc.gdmec.edu.cn'
 let vcodeurl = 'https://jwc.gdmec.edu.cn/CheckCode.aspx'
-let someurl = 'https://jwc.gdmec.edu.cn/xf_xsqxxxk.aspx?xh=07190505&xm=%B3%C2%CA%E7%E2%F9&gnmkdm=N121203'
+let someurl = 'https://jwc.gdmec.edu.cn/xsxk.aspx?xh=07190505&xm=%B3%C2%CA%E7%E2%F9&gnmkdm=N121205'
 let __VIEWSTATE
 let vcode,cookie
-//访问主页
-https.get(baseurl,(res) => {
+https.get(baseurl,(res)=>{
     let chunks = []
-    res.on('data',(chunk) => {
+    res.on('data',(chunk)=>{
         chunks.push(chunk)
     })
-    res.on('end',() => {
+    res.on('end',()=>{
         let $ = cheerio.load(chunks.toString())
         __VIEWSTATE = $('input[name="__VIEWSTATE"]')[0].attribs.value
         console.log(__VIEWSTATE)
     })
 })
-
-//获取验证码和cookie
 https.get(vcodeurl,(res)=>{
-    //获取cookie
     cookie = res.headers['set-cookie']
-    //设置二进制传输编码
     res.setEncoding('binary')
     let imgData = ''
-    res.on('data',(chunk) => {
+    res.on('data',(chunk)=>{
         imgData += chunk
     })
-    res.on('end',() => {
+    res.on('end',()=>{
         fs.writeFile('vcode.png',imgData,'binary',(err)=>{
             if(err){
-                console.log(err)
+               console.log(err)
                 return
             }
             if(process.platform=='win32')
@@ -66,8 +59,7 @@ https.get(vcodeurl,(res)=>{
     })
 })
 function login(){
-    //准备postData
-    let postData = querystring.encode({
+    let postData=querystring.encode({
         __VIEWSTATE,
         TextBox1:user,
         TextBox2:password,
@@ -75,10 +67,8 @@ function login(){
         Button1:'',
         RadioButtonList1:''
     })
-    // postData += '%BD%CC%CA%A6'
-    postData += 'D1%A7%C9%FA'
+    postData += '%D1%A7%C9%FA'
     console.log(postData)
-    //准备request options
     let opt = {
         host:'jwc.gdmec.edu.cn',
         port:443,
@@ -90,40 +80,37 @@ function login(){
             'Cookie':cookie
         }
     }
-    //发起request
     let req = https.request(opt,(res)=>{
-        let chunks = []
+        let chunks =[]
         res.on('data',(chunk)=>{
             chunks.push(chunk)
         })
         res.on('end',()=>{
-            console.log(chunks.toString())
+           console.log(chunks.toString())
             geturl()
         })
     })
-    //向服务器上传postData
     req.write(postData)
     req.end()
 }
- 
 function geturl(){
-    let refer = `https://jwc.gdmec.edu.cn/xs_main.aspx?xh=07190505`
-    let opt={
-        headers:{
-            'Refeter':refer,
-            'Cookie':cookie,
-        }
+    let refer = `https://jwc.gdmec.edu.cn/xs_main.aspx?xh=$07190505`
+    let opt = {
+    headers:{
+        'Referer':refer,
+        'Cookie':cookie,
+    }
     }
     https.get(someurl,opt,(res)=>{
-        let chunks = []
+        let chunks=[]
         res.on('data',(chunk)=>{
             chunks.push(chunk)
         })
         res.on('end',()=>{
             let buffer = Buffer.concat(chunks)
-            let str = iconv.decode(buffer,'gbk')
+            let str =iconv.decode(buffer,'gbk')
             let $ = cheerio.load(str)
-            $('#DataGrid2>tbody>tr>td:nth-child(1)').map(function(el){
+            $('#kcmcgrid>tbody>tr>td:nth-child(2)').map(function(el){
                 console.log($(this).text())
             })
         })
